@@ -31,10 +31,10 @@ router.post('/', async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY);
+    const token = jwt.sign({ userId: user.id, role: user.role }, process.env.SECRET_KEY);
 
     res.status(201).json({ message: 'User login successful', token });
-    
+
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ message: 'An error occurred during login' });

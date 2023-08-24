@@ -13,7 +13,7 @@ const users = [];
 
 router.post('/', async (req, res) => {
   // Signup logic here
-  const { username, password } = req.body;
+  const { username, password, role } = req.body;
 
   // Check if username already exists
   if (users.find(u => u.username === username)) {
@@ -26,18 +26,19 @@ router.post('/', async (req, res) => {
 
     // Create user
     const newUser = {
-      id: users.length + 1,
+      id: users.length + 1, //id to be auto generated
       username,
       password: hashedPassword,
+      role
     };
 
     users.push(newUser);
 
     // Generate JWT token
-    const token = jwt.sign({ userId: newUser.id }, process.env.SECRET_KEY);
+    const token = jwt.sign({ userId: newUser.id, role: newUser.role }, process.env.SECRET_KEY);
 
     res.status(201).json({ message: 'User created successfully', token });
-    
+
   } catch (error) {
     console.error('Error during signup:', error);
     res.status(500).json({ message: 'An error occurred during signup' });
